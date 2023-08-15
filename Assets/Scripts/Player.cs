@@ -10,24 +10,21 @@ public class Player : MonoBehaviour
 {
     bool upKeyPressed;
     bool downKeyPressed;
+    [SerializeField] Ball ball;
 
-    // Start is called before the first frame update
-    void Start()
+    void Update()
     {
-        
-    }
+        Vector2 bottomLeft = Camera.main.ViewportToWorldPoint(new Vector3(0, 0, Camera.main.nearClipPlane));
+        transform.position = new Vector3(bottomLeft.x + 0.22f, transform.position.y, 0);
 
-    // Update is called once per frame
-    void FixedUpdate()
-    {
-        if (upKeyPressed && transform.position.y < 3.17f)
+        if (upKeyPressed && transform.position.y < 3.72f)
         {
-            transform.Translate(new Vector3(0, 0.3f, 0));
+            transform.Translate(new Vector3(0, 10f, 0) * Time.deltaTime);
         }
 
-        if (downKeyPressed && transform.position.y > -3.15f)
+        if (downKeyPressed && transform.position.y > -3.72f)
         {
-            transform.Translate(new Vector3(0, -0.3f, 0));
+            transform.Translate(new Vector3(0, -10f, 0) * Time.deltaTime);
         }
     }
 
@@ -52,6 +49,14 @@ public class Player : MonoBehaviour
         else
         {
             downKeyPressed = false;
+        }
+    }
+
+    public void OnCollisionEnter2D(Collision2D col)
+    {
+        if (ball.Speed.x < 0)
+        {
+            ball.Speed = new Vector2(-ball.Speed.x, ball.Speed.y);
         }
     }
 
